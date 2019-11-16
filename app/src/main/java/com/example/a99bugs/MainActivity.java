@@ -6,24 +6,28 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewDebug;
+import android.widget.TextView;
 import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button oneDownButton;
     private Button twoDownButton;
+    private TextView bugLabelTextView;
     // public static final String TAKE_DOWN_NUMBER = "takeDownNumber";
     public static final int REQUEST_1 = 1;
     public static final String BUGS_MESSAGE = "BUGS_MESSAGE";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        oneDownButton = (Button) findViewById(R.id.oneDownButton);
-        twoDownButton = (Button) findViewById(R.id.twoDownButton);
+        oneDownButton = findViewById(R.id.oneDownButton);
+        twoDownButton = findViewById(R.id.twoDownButton);
+        bugLabelTextView = findViewById(R.id.bugLabelTextView);
+
         oneDownButton.setOnClickListener(this);
         twoDownButton.setOnClickListener(this);
     }
@@ -41,14 +45,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.twoDownButton:
                 intent.putExtra("TAKE_DOWN_NUMBER", 2);
-                startActivity(intent);
+                startActivityForResult(intent, REQUEST_1);
                 break;
         }
 
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    protected void onActivityResult(int requestCode, int resultCode, Intent returnIntent) {
+        super.onActivityResult(requestCode, resultCode, returnIntent);
+
+            bugLabelTextView.setText((returnIntent.getStringExtra("BUGS_MESSAGE")));
+
+
     }
 }
